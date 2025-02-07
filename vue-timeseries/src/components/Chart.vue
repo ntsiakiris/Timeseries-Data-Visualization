@@ -50,11 +50,17 @@ const chartDataset = computed(() => {
 </script>
 
 <template>
-  <div>
-    <Line :data="chartDataset" :options="chartOptions" />
+  <div class="Line-container">
+    <Line  :data="chartDataset" :options="chartOptions" />
   </div>
 </template>
 
 <style scoped>
-/* Add custom styles for the chart */
+.Line-container {
+  display:flex;
+  justify-content: center;
+  align-content: center;
+  max-width: 1300px;
+  margin: 150px;
+}
 </style>
