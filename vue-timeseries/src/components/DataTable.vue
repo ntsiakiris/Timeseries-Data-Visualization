@@ -108,23 +108,30 @@ const validateInput = (event, item, index, key) => {
 </template>
 
 <style scoped>
+/* Table Wrapper */
 .table-wrapper {
   width: 100%;
-  max-width: 800px;
+  max-width: 850px;
   overflow-x: auto;
-  margin: 20px auto;
+  margin: 10px auto;
   border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 8px;
+  background: white;
 }
 
+/* Table Container */
 .table-container {
-  max-height: 800px;
+  max-height: 70vh;
   overflow-y: auto;
   display: block;
 }
 
+/* Table Styling */
 table {
   width: 100%;
   border-collapse: collapse;
+  /* min-width: 600px; */
 }
 
 thead {
@@ -137,18 +144,15 @@ thead {
 th,
 td {
   text-align: center;
-  padding: 8px;
-  border: 1px solid #3d3d3d;
+  padding: 5px;
+  font-size: 12px;
 }
 
 th {
   background-color: rgba(117, 211, 255, 0.3);
 }
 
-tr:hover {
-  background-color: #f9f9f9;
-}
-
+/* Input Styling */
 .input-container {
   display: flex;
   flex-direction: column;
@@ -158,25 +162,68 @@ tr:hover {
 input {
   text-align: center;
   width: 100%;
-  padding: 5px;
-  border-radius: 4px;
+  padding: 3px;
+  font-size: 12px;
 }
 
 input[type="number"] {
   text-align: right;
 }
 
+/* Error Message */
 .error-message {
   color: red;
-  font-size: 12px;
+  font-size: 10px; /* Reduce font size */
   margin-top: 2px;
 }
 
+/* Row Alternating Colors */
 tr:nth-child(even) {
   background-color: rgb(109, 182, 250);
 }
 
 tr:nth-child(odd) {
   background-color: rgb(184, 215, 255);
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 1400px) {
+  .table-wrapper {
+    width: 95%;
+  }
+  table {
+    font-size: 10px;
+  }
+  td,
+  th {
+    padding: 4px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .table-wrapper {
+    overflow-x: auto;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  table {
+    font-size: 9px;
+  }
+  td,
+  th {
+    padding: 3px;
+  }
+  input {
+    padding: 2px;
+    font-size: 9px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .table-wrapper {
+    padding: 3px;
+  }
 }
 </style>

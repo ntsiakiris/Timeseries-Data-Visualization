@@ -58,7 +58,7 @@ const filterData = ({ startDate, endDate }) => {
   overflow: visible;
 }
 
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 1200px) {
   .app-container {
     flex-direction: column;
     justify-content: center;
