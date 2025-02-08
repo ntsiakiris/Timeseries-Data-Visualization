@@ -66,7 +66,7 @@ const chartDataset = computed(() => {
 @media screen and (max-width: 1100px) {
   .Line-container{
     width: 100%;
-    min-height: 350px;
+    min-height: 550px;
   }
   
 }
