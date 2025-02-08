@@ -15,7 +15,7 @@ const applyFilter = () => {
   emit("filterData", { startDate: startDate.value, endDate: endDate.value });
 };
 
-// Watch for changes in startDate and endDate d
+// Watch for changes in startDate and endDate date
 watch([startDate, endDate], () => {
   // Clear previous timeout to reset the debounce
   clearTimeout(debounceTimeout);

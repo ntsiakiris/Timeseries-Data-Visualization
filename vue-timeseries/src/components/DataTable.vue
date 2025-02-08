@@ -1,21 +1,12 @@
 <script setup>
 import { defineProps, defineEmits, ref } from "vue";
+import formatDate from "../functions/formatDate";
 
 const props = defineProps({
   tableData: Array, // Define tableData as an array prop
 });
 
 const emit = defineEmits(["updateTableData"]); // Event to propagate the changes back to parent
-
-const formatDate = (dateString) => {
-  return new Date(dateString).toLocaleString("en-GB", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-};
 
 // Store error messages and previous valid values
 const errors = ref(Array(props.tableData.length).fill(""));
@@ -52,85 +43,106 @@ const validateInput = (event, item, index, key) => {
   item[key] = numericValue;
   previousValues.value[index][key] = numericValue; // Store the last valid value
 
-  // Emit updated data
   emit("updateTableData", props.tableData);
 };
 </script>
 
 <template>
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th>Timestamp</th>
-          <th>DE Price (€)</th>
-          <th>GR Price (€)</th>
-          <th>FR Price (€)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item, index) in props.tableData" :key="index">
-          <td>
-            <input type="text" :value="formatDate(item.DateTime)" readonly />
-          </td>
-          <td>
-            <div class="input-container">
-              <input
-                type="number"
-                :value="item.ENTSOE_DE_DAM_Price"
-                @input="validateInput($event, item, index, 'ENTSOE_DE_DAM_Price')"
-              />
-              <span v-if="errors[index]" class="error-message">{{ errors[index] }}</span>
-            </div>
-          </td>
-          <td>
-            <div class="input-container">
-              <input
-                type="number"
-                :value="item.ENTSOE_GR_DAM_Price"
-                @input="validateInput($event, item, index, 'ENTSOE_GR_DAM_Price')"
-              />
-              <span v-if="errors[index]" class="error-message">{{ errors[index] }}</span>
-            </div>
-          </td>
-          <td>
-            <div class="input-container">
-              <input
-                type="number"
-                :value="item.ENTSOE_FR_DAM_Price"
-                @input="validateInput($event, item, index, 'ENTSOE_FR_DAM_Price')"
-              />
-              <span v-if="errors[index]" class="error-message">{{ errors[index] }}</span>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="table-wrapper">
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>ENTSOE_DE_DAM_Price</th>
+            <th>ENTSOE_GR_DAM_Price</th>
+            <th>ENTSOE_FR_DAM_Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in props.tableData" :key="index">
+            <td>
+              <input type="text" :value="formatDate(item.DateTime)" readonly />
+            </td>
+            <td>
+              <div class="input-container">
+                <input
+                  type="number"
+                  :value="item.ENTSOE_DE_DAM_Price"
+                  @input="validateInput($event, item, index, 'ENTSOE_DE_DAM_Price')"
+                />
+                <span v-if="errors[index]" class="error-message">{{
+                  errors[index]
+                }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="input-container">
+                <input
+                  type="number"
+                  :value="item.ENTSOE_GR_DAM_Price"
+                  @input="validateInput($event, item, index, 'ENTSOE_GR_DAM_Price')"
+                />
+                <span v-if="errors[index]" class="error-message">{{
+                  errors[index]
+                }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="input-container">
+                <input
+                  type="number"
+                  :value="item.ENTSOE_FR_DAM_Price"
+                  @input="validateInput($event, item, index, 'ENTSOE_FR_DAM_Price')"
+                />
+                <span v-if="errors[index]" class="error-message">{{
+                  errors[index]
+                }}</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.table-wrapper {
+  width: 100%;
+  max-width: 800px;
+  overflow-x: auto;
+  margin: 20px auto;
+  border: 1px solid #ccc;
+}
+
 .table-container {
-  margin: 20px;
+  max-height: 800px;
+  overflow-y: auto;
+  display: block;
 }
 
 table {
-  border-collapse: collapse;
   width: 100%;
-  max-width: 600px;
   border-collapse: collapse;
-  border: 1px solid #3d3d3d;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  background-color: #f1f1f1;
+  z-index: 10;
 }
 
 th,
 td {
   text-align: center;
-  padding: 3px;
+  padding: 8px;
   border: 1px solid #3d3d3d;
 }
 
 th {
-  background-color: #f1f1f1;
+  background-color: rgba(117, 211, 255, 0.3);
 }
 
 tr:hover {
@@ -161,10 +173,10 @@ input[type="number"] {
 }
 
 tr:nth-child(even) {
-  background-color: rgb(187, 187, 187);
+  background-color: rgb(109, 182, 250);
 }
 
 tr:nth-child(odd) {
-  background-color: rgb(142, 191, 255);
+  background-color: rgb(184, 215, 255);
 }
 </style>

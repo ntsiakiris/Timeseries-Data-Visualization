@@ -5,9 +5,9 @@ import Chart from "./components/Chart.vue";
 import DateRangePicker from "./components/DateRangePicker.vue";
 import jsonData from "./timeseries.json";
 
-// Pass the data from the json file through the parent component so the table and chart updates together
+// Pass the data from the json file through the parent component
 const tableData = ref(jsonData);
-const chartData = ref(jsonData); // Store chart data
+const chartData = ref(jsonData);
 
 // Filter the table and chart data based on the selected date range
 const filterData = ({ startDate, endDate }) => {
@@ -30,7 +30,7 @@ const filterData = ({ startDate, endDate }) => {
 
   datachecker(filteredData);
 
-  // Update both table and chart data
+  // Update table and chart data
   tableData.value = filteredData;
   chartData.value = filteredData;
 };
@@ -45,18 +45,17 @@ const filterData = ({ startDate, endDate }) => {
 </template>
 
 <style scoped>
+.filter-container {
+  display: flex;
+  justify-content: center;
+  align-content: flex-start;
+  margin: 20px 0px;
+}
 .app-container {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   overflow: visible;
-}
-
-.filter-container {
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  margin: 20px 0px;
 }
 
 @media screen and (max-width: 1100px) {

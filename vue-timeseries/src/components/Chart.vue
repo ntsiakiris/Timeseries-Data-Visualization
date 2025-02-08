@@ -1,6 +1,7 @@
 <script setup>
 import { defineProps, computed } from "vue";
 import { Line } from "vue-chartjs";
+import formatDate from "../functions/formatDate";
 import {
   Chart as ChartJS,
   Title,
@@ -10,7 +11,7 @@ import {
   CategoryScale,
   LinearScale,
   PointElement,
-} from "chart.js"; // Import Chart.js components
+} from "chart.js";
 
 // Register chart.js components
 ChartJS.register(
@@ -42,22 +43,22 @@ const chartOptions = {
 // Use computed to reactively generate the chart dataset
 const chartDataset = computed(() => {
   return {
-    labels: props.chartData.map((item) => item.DateTime),
+    labels: props.chartData.map((item) => formatDate(item.DateTime)),
     datasets: [
       {
-        label: "DE Price (€)",
+        label: "DE Price",
         data: props.chartData.map((item) => item.ENTSOE_DE_DAM_Price),
         borderColor: "rgba(255, 99, 132, 1)",
         tension: 0.4,
       },
       {
-        label: "GR Price (€)",
+        label: "GR Price",
         data: props.chartData.map((item) => item.ENTSOE_GR_DAM_Price),
         borderColor: "rgba(54, 162, 235, 1)",
         tension: 0.4,
       },
       {
-        label: "FR Price (€)",
+        label: "FR Price",
         data: props.chartData.map((item) => item.ENTSOE_FR_DAM_Price),
         borderColor: "rgba(75, 192, 192, 1)",
         tension: 0.4,
@@ -76,15 +77,17 @@ const chartDataset = computed(() => {
 <style scoped>
 .Line-container {
   position: sticky;
-  width: 60%;
+  width: 55%;
   top: 10px;
   max-height: 80vh;
+  margin: 20px auto;
 }
 
 @media screen and (max-width: 1100px) {
   .Line-container {
     width: 100%;
     min-height: 550px;
+    margin: 20px auto;
   }
 }
 </style>
