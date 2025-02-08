@@ -1,46 +1,60 @@
 <script setup>
-import { defineProps, ref } from 'vue';
+import { defineProps, defineEmits, ref } from "vue";
 
-const props = defineProps(['tableData']);
+const props = defineProps({
+  tableData: Array, // Define tableData as an array prop
+});
 
-const tableData = ref(props.tableData);
+const emit = defineEmits(["updateTableData"]); // Event to propagate the changes back to parent
 
 const formatDate = (dateString) => {
-  return new Date(dateString).toLocaleString('en-GB', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
+  return new Date(dateString).toLocaleString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 };
 
-const handleDateChange = (index, newDate) => {
-  tableData.value[index].DateTime = new Date(newDate).toISOString();  // edit date in the correct format
-};
+// Store error messages and previous valid values
+const errors = ref(Array(props.tableData.length).fill(""));
+const previousValues = ref(
+  props.tableData.map((item) => ({
+    ENTSOE_DE_DAM_Price: item.ENTSOE_DE_DAM_Price,
+    ENTSOE_GR_DAM_Price: item.ENTSOE_GR_DAM_Price,
+    ENTSOE_FR_DAM_Price: item.ENTSOE_FR_DAM_Price,
+  }))
+);
 
-//  input number validation
-const validateInput = (event, item) => {
-  let value = event.target.value;
+// Validation function
+const validateInput = (event, item, index, key) => {
+  let value = event.target.value.trim();
 
-  // Allow "-" when user starts typing a negative number
+  // Allow "-" when the user starts typing a negative number
   if (value === "-") {
-    item.ENTSOE_DE_DAM_Price = value;
+    errors.value[index] = "Please enter a valid number.";
+    event.target.value = previousValues.value[index][key]; // Restore previous valid value
     return;
   }
 
-  // Convert to number
   let numericValue = Number(value);
 
-  // If valid number, clamp within range
-  if (!isNaN(numericValue)) {
-    item.ENTSOE_DE_DAM_Price = Math.min(2000, Math.max(-2000, numericValue));
-  } else {
-    // Reset to min or max if out of range
-    item.ENTSOE_DE_DAM_Price = "";
+  // Validation checks
+  if (isNaN(numericValue) || numericValue < -2000 || numericValue > 2000) {
+    errors.value[index] = "Value must be between -2000 and 2000.";
+    event.target.value = previousValues.value[index][key]; // Restore previous valid value
+    return;
   }
-};
 
+  // If valid, update the value and clear error message
+  errors.value[index] = "";
+  item[key] = numericValue;
+  previousValues.value[index][key] = numericValue; // Store the last valid value
+
+  // Emit updated data
+  emit("updateTableData", props.tableData);
+};
 </script>
 
 <template>
@@ -55,27 +69,39 @@ const validateInput = (event, item) => {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in tableData" :key="index">
+        <tr v-for="(item, index) in props.tableData" :key="index">
           <td>
-            <!-- Display formatted date -->
-            <input type="text" 
-            :value="formatDate(item.DateTime)" 
-            readonly />
+            <input type="text" :value="formatDate(item.DateTime)" readonly />
           </td>
           <td>
-            <input type="number" 
-            v-model="item.ENTSOE_DE_DAM_Price"
-            @input="validateInput($event, item)" />
+            <div class="input-container">
+              <input
+                type="number"
+                :value="item.ENTSOE_DE_DAM_Price"
+                @input="validateInput($event, item, index, 'ENTSOE_DE_DAM_Price')"
+              />
+              <span v-if="errors[index]" class="error-message">{{ errors[index] }}</span>
+            </div>
           </td>
           <td>
-            <input type="number" 
-            v-model="item.ENTSOE_GR_DAM_Price"
-            @input="validateInput($event, item)" />
+            <div class="input-container">
+              <input
+                type="number"
+                :value="item.ENTSOE_GR_DAM_Price"
+                @input="validateInput($event, item, index, 'ENTSOE_GR_DAM_Price')"
+              />
+              <span v-if="errors[index]" class="error-message">{{ errors[index] }}</span>
+            </div>
           </td>
           <td>
-            <input type="number" 
-            v-model="item.ENTSOE_FR_DAM_Price" 
-            @input="validateInput($event, item)"/>
+            <div class="input-container">
+              <input
+                type="number"
+                :value="item.ENTSOE_FR_DAM_Price"
+                @input="validateInput($event, item, index, 'ENTSOE_FR_DAM_Price')"
+              />
+              <span v-if="errors[index]" class="error-message">{{ errors[index] }}</span>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -85,7 +111,7 @@ const validateInput = (event, item) => {
 
 <style scoped>
 .table-container {
-  margin: 20px;  
+  margin: 20px;
 }
 
 table {
@@ -96,7 +122,8 @@ table {
   border: 1px solid #3d3d3d;
 }
 
-th, td {
+th,
+td {
   text-align: center;
   padding: 3px;
   border: 1px solid #3d3d3d;
@@ -110,6 +137,12 @@ tr:hover {
   background-color: #f9f9f9;
 }
 
+.input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 input {
   text-align: center;
   width: 100%;
@@ -121,6 +154,11 @@ input[type="number"] {
   text-align: right;
 }
 
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 2px;
+}
 
 tr:nth-child(even) {
   background-color: rgb(187, 187, 187);
