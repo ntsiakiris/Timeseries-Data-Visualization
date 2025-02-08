@@ -1,13 +1,13 @@
 <script setup>
-import { defineProps, computed } from 'vue';  // Make sure computed is imported
-import { Line } from 'vue-chartjs';  // Import Line chart from vue-chartjs
-import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement } from 'chart.js';  // Import the necessary Chart.js components
+import { defineProps, computed } from 'vue';  
+import { Line } from 'vue-chartjs';  
+import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement } from 'chart.js';  // Import Chart.js components
 
 // Register chart.js components
 ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement);
 
 const props = defineProps({
-  chartData: Array, // The timeseries data passed from the parent
+  chartData: Array, 
 });
 
 // Prepare chart data and options
@@ -57,10 +57,18 @@ const chartDataset = computed(() => {
 
 <style scoped>
 .Line-container {
-  display:flex;
-  justify-content: center;
-  align-content: center;
-  max-width: 1300px;
-  margin: 150px;
+  position: sticky;
+  width: 50%;
+  top: 10px;
+  max-height: 80vh;
 }
+
+@media screen and (max-width: 1100px) {
+  .Line-container{
+    width: 100%;
+    min-height: 350px;
+  }
+  
+}
+
 </style>

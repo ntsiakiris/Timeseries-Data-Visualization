@@ -18,6 +18,29 @@ const formatDate = (dateString) => {
 const handleDateChange = (index, newDate) => {
   tableData.value[index].DateTime = new Date(newDate).toISOString();  // edit date in the correct format
 };
+
+//  input number validation
+const validateInput = (event, item) => {
+  let value = event.target.value;
+
+  // Allow "-" when user starts typing a negative number
+  if (value === "-") {
+    item.ENTSOE_DE_DAM_Price = value;
+    return;
+  }
+
+  // Convert to number
+  let numericValue = Number(value);
+
+  // If valid number, clamp within range
+  if (!isNaN(numericValue)) {
+    item.ENTSOE_DE_DAM_Price = Math.min(2000, Math.max(-2000, numericValue));
+  } else {
+    // Reset to min or max if out of range
+    item.ENTSOE_DE_DAM_Price = "";
+  }
+};
+
 </script>
 
 <template>
@@ -36,17 +59,23 @@ const handleDateChange = (index, newDate) => {
           <td>
             <!-- Display formatted date -->
             <input type="text" 
-                   :value="formatDate(item.DateTime)" 
-                   @input="handleDateChange(index, $event.target.value)" />
+            :value="formatDate(item.DateTime)" 
+            readonly />
           </td>
           <td>
-            <input type="number" v-model="item.ENTSOE_DE_DAM_Price" />
+            <input type="number" 
+            v-model="item.ENTSOE_DE_DAM_Price"
+            @input="validateInput($event, item)" />
           </td>
           <td>
-            <input type="number" v-model="item.ENTSOE_GR_DAM_Price" />
+            <input type="number" 
+            v-model="item.ENTSOE_GR_DAM_Price"
+            @input="validateInput($event, item)" />
           </td>
           <td>
-            <input type="number" v-model="item.ENTSOE_FR_DAM_Price" />
+            <input type="number" 
+            v-model="item.ENTSOE_FR_DAM_Price" 
+            @input="validateInput($event, item)"/>
           </td>
         </tr>
       </tbody>
@@ -56,21 +85,21 @@ const handleDateChange = (index, newDate) => {
 
 <style scoped>
 .table-container {
-  margin: 20px;
-  display: flex;
-  justify-content: center;
-  align-content: center;
+  margin: 20px;  
 }
 
 table {
   border-collapse: collapse;
   width: 100%;
-  max-width: 700px;
+  max-width: 600px;
+  border-collapse: collapse;
+  border: 1px solid #3d3d3d;
 }
 
 th, td {
   text-align: center;
-  padding: 10px;
+  padding: 3px;
+  border: 1px solid #3d3d3d;
 }
 
 th {
@@ -90,5 +119,14 @@ input {
 
 input[type="number"] {
   text-align: right;
+}
+
+
+tr:nth-child(even) {
+  background-color: rgb(187, 187, 187);
+}
+
+tr:nth-child(odd) {
+  background-color: rgb(142, 191, 255);
 }
 </style>
