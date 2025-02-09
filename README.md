@@ -18,7 +18,9 @@ or
 
 CTRL+ SHIFT+ P type git clone and paste the link https://github.com/ntsiakiris/Timeseries-Data-Visualization.git
 
-terminal: cd Timeseries-Data-Visualization/vue-timeseries
+Open a terminal and run:
+
+cd Timeseries-Data-Visualization/vue-timeseries
 
 npm install 
 
