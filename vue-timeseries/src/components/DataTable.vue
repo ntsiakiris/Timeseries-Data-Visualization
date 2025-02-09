@@ -185,7 +185,7 @@ input[type="number"] {
 }
 
 tr:nth-child(even) {
-  background-color: rgb(109, 182, 250);
+  background-color: rgb(156, 206, 253);
 }
 
 tr:nth-child(odd) {

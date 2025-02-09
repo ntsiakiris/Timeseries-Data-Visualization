@@ -29,7 +29,7 @@ watch([startDate, endDate], () => {
 
 <template>
   <div class="date-picker-container">
-    <label for="filter-container" class="title">Filter your data<span>📅</span></label>
+    <label for="filter-container" class="title">Filter your data <span>📅</span></label>
     <div class="filter-container">
       <label for="startDate">Start Date:</label>
       <input type="date" v-model="startDate" />
