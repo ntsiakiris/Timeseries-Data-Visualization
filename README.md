@@ -13,11 +13,12 @@ Ensure you have the following installed:
 Open a terminal and run:
 
 git clone https://github.com/ntsiakiris/Timeseries-Data-Visualization.git
+
 or 
+
 CTRL+ SHIFT+ P type git clone and paste the link https://github.com/ntsiakiris/Timeseries-Data-Visualization.git
 
 terminal: cd Timeseries-Data-Visualization/vue-timeseries
-after that type:
 
 npm install 
 npm run dev
