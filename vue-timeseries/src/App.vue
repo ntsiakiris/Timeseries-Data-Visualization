@@ -38,11 +38,13 @@ const filterData = ({ startDate, endDate }) => {
 </script>
 
 <template>
+  <div>
   <DateRangePicker @filterData="filterData" class="filter-container" />
   <div class="app-container">
     <TableComponent :tableData="tableData" />
     <Chart :chartData="chartData" />
   </div>
+</div>
 </template>
 
 <style scoped>
