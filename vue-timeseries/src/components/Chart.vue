@@ -13,7 +13,6 @@ import {
   PointElement,
 } from "chart.js";
 
-// Register chart.js components
 ChartJS.register(
   Title,
   Tooltip,

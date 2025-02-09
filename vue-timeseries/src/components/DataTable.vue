@@ -49,6 +49,7 @@ const validateInput = (event, item, index, key) => {
 
 <template>
   <div class="table-wrapper">
+    <label for="table">Timeseries Table</label>
     <div class="table-container">
       <table>
         <thead>
@@ -108,30 +109,38 @@ const validateInput = (event, item, index, key) => {
 </template>
 
 <style scoped>
-/* Table Wrapper */
+label {
+  display: block;
+  text-align: center;
+  background: rgba(0, 162, 255, 0.2);
+  color: #00a2ff;
+  border-radius: 8px;
+  border: 2px solid rgba(0, 162, 255, 0.5);
+  box-shadow: 0 4px 10px rgba(0, 162, 255, 0.3);
+  backdrop-filter: blur(10px);
+  font-weight: bold;
+}
+
 .table-wrapper {
   width: 100%;
   max-width: 850px;
   overflow-x: auto;
   margin: 10px auto;
-  border: 1px solid #ccc;
+  border: 1px solid #acacacad;
   padding: 5px;
   border-radius: 8px;
   background: white;
 }
 
-/* Table Container */
 .table-container {
   max-height: 70vh;
   overflow-y: auto;
   display: block;
 }
 
-/* Table Styling */
 table {
   width: 100%;
   border-collapse: collapse;
-  /* min-width: 600px; */
 }
 
 thead {
@@ -152,7 +161,6 @@ th {
   background-color: rgba(117, 211, 255, 0.3);
 }
 
-/* Input Styling */
 .input-container {
   display: flex;
   flex-direction: column;
@@ -170,14 +178,12 @@ input[type="number"] {
   text-align: right;
 }
 
-/* Error Message */
 .error-message {
   color: red;
-  font-size: 10px; /* Reduce font size */
+  font-size: 10px;
   margin-top: 2px;
 }
 
-/* Row Alternating Colors */
 tr:nth-child(even) {
   background-color: rgb(109, 182, 250);
 }
@@ -186,7 +192,6 @@ tr:nth-child(odd) {
   background-color: rgb(184, 215, 255);
 }
 
-/* Responsive Adjustments */
 @media screen and (max-width: 1400px) {
   .table-wrapper {
     width: 95%;
@@ -218,6 +223,7 @@ tr:nth-child(odd) {
   input {
     padding: 2px;
     font-size: 9px;
+    width: fit-content;
   }
 }
 

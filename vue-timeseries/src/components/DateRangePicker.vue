@@ -10,14 +10,14 @@ const endDate = ref("");
 
 let debounceTimeout;
 
-// Handle the date range change and emit the filtered data (debouncing)
+// Handle the date range change and emit the filtered data
 const applyFilter = () => {
   emit("filterData", { startDate: startDate.value, endDate: endDate.value });
 };
 
 // Watch for changes in startDate and endDate date
 watch([startDate, endDate], () => {
-  // Clear previous timeout to reset the debounce
+  // Clear previous timeout (debouncing)
   clearTimeout(debounceTimeout);
 
   // trigger the filter after 500ms
@@ -29,7 +29,7 @@ watch([startDate, endDate], () => {
 
 <template>
   <div class="date-picker-container">
-    <label for="filter-container">Choose the date to filter your data:</label>
+    <label for="filter-container" class="title">Filter your data<span>📅</span></label>
     <div class="filter-container">
       <label for="startDate">Start Date:</label>
       <input type="date" v-model="startDate" />
@@ -74,5 +74,22 @@ input[type="date"] {
 
 input:focus {
   border-color: #4caf50;
+}
+
+@media screen and (max-width: 768px) {
+  label {
+    font-size: small;
+    padding: 5px 0;
+  }
+}
+
+.title {
+  background: rgba(0, 162, 255, 0.2);
+  color: #00a2ff;
+  border-radius: 8px;
+  border: 2px solid rgba(0, 162, 255, 0.5);
+  box-shadow: 0 4px 10px rgba(0, 162, 255, 0.3);
+  backdrop-filter: blur(10px);
+  font-weight: bold;
 }
 </style>

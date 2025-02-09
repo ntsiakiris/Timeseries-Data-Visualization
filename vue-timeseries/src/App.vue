@@ -13,22 +13,23 @@ const chartData = ref(jsonData);
 const filterData = ({ startDate, endDate }) => {
   if (!startDate || !endDate) return;
 
-  // Filter the data based on the start and end date
+  // Get the start and end date
+  const start = new Date(startDate);
+  start.setHours(0, 0, 0, 0);
+
+  const end = new Date(endDate);
+  end.setHours(23, 59, 59, 999);
+
+  // Filter the data
   const filteredData = jsonData.filter((item) => {
     const itemDate = new Date(item.DateTime);
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-
     return itemDate >= start && itemDate <= end;
   });
 
-  const datachecker = (filterData) => {
-    if (filteredData.length === 0) {
-      alert("No data available for the selected date range.");
-    }
-  };
-
-  datachecker(filteredData);
+  // Check if any data was found
+  if (filteredData.length === 0) {
+    alert("No data available for the selected date range.");
+  }
 
   // Update table and chart data
   tableData.value = filteredData;
