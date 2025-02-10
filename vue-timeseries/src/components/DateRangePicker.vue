@@ -76,13 +76,6 @@ input:focus {
   border-color: #4caf50;
 }
 
-@media screen and (max-width: 768px) {
-  label {
-    font-size: small;
-    padding: 5px 0;
-  }
-}
-
 .title {
   background: rgba(0, 162, 255, 0.2);
   color: #00a2ff;
@@ -92,4 +85,19 @@ input:focus {
   backdrop-filter: blur(10px);
   font-weight: bold;
 }
+
+@media screen and (max-width: 768px) {
+  label {
+    font-size: small;
+    padding: 5px 0;
+  }
+  .date-picker-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
+}
+
+}
+
 </style>

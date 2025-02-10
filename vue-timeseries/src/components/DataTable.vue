@@ -1,17 +1,13 @@
 <script setup>
-import { defineProps, defineEmits, ref } from "vue";
+import { defineModel, ref } from "vue";
 import formatDate from "../functions/formatDate";
 
-const props = defineProps({
-  tableData: Array, // Define tableData as an array prop
-});
-
-const emit = defineEmits(["updateTableData"]); // Event to propagate the changes back to parent
+const tableData = defineModel();
 
 // Store error messages and previous valid values
-const errors = ref(Array(props.tableData.length).fill(""));
+const errors = ref(Array(tableData.value.length).fill(""));
 const previousValues = ref(
-  props.tableData.map((item) => ({
+  tableData.value.map((item) => ({
     ENTSOE_DE_DAM_Price: item.ENTSOE_DE_DAM_Price,
     ENTSOE_GR_DAM_Price: item.ENTSOE_GR_DAM_Price,
     ENTSOE_FR_DAM_Price: item.ENTSOE_FR_DAM_Price,
@@ -22,7 +18,6 @@ const previousValues = ref(
 const validateInput = (event, item, index, key) => {
   let value = event.target.value.trim();
 
-  // Allow "-" when the user starts typing a negative number
   if (value === "-") {
     errors.value[index] = "Please enter a valid number.";
     event.target.value = previousValues.value[index][key]; // Restore previous valid value
@@ -31,19 +26,15 @@ const validateInput = (event, item, index, key) => {
 
   let numericValue = Number(value);
 
-  // Validation checks
   if (isNaN(numericValue) || numericValue < -2000 || numericValue > 2000) {
     errors.value[index] = "Value must be between -2000 and 2000.";
     event.target.value = previousValues.value[index][key]; // Restore previous valid value
     return;
   }
 
-  // If valid, update the value and clear error message
   errors.value[index] = "";
   item[key] = numericValue;
-  previousValues.value[index][key] = numericValue; // Store the last valid value
-
-  emit("updateTableData", props.tableData);
+  previousValues.value[index][key] = numericValue;
 };
 </script>
 
@@ -61,7 +52,7 @@ const validateInput = (event, item, index, key) => {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in props.tableData" :key="index">
+          <tr v-for="(item, index) in tableData" :key="index">
             <td>
               <input type="text" :value="formatDate(item.DateTime)" readonly />
             </td>
@@ -69,7 +60,7 @@ const validateInput = (event, item, index, key) => {
               <div class="input-container">
                 <input
                   type="number"
-                  :value="item.ENTSOE_DE_DAM_Price"
+                  v-model="item.ENTSOE_DE_DAM_Price"
                   @input="validateInput($event, item, index, 'ENTSOE_DE_DAM_Price')"
                 />
                 <span v-if="errors[index]" class="error-message">{{
@@ -81,7 +72,7 @@ const validateInput = (event, item, index, key) => {
               <div class="input-container">
                 <input
                   type="number"
-                  :value="item.ENTSOE_GR_DAM_Price"
+                  v-model="item.ENTSOE_GR_DAM_Price"
                   @input="validateInput($event, item, index, 'ENTSOE_GR_DAM_Price')"
                 />
                 <span v-if="errors[index]" class="error-message">{{
@@ -93,7 +84,7 @@ const validateInput = (event, item, index, key) => {
               <div class="input-container">
                 <input
                   type="number"
-                  :value="item.ENTSOE_FR_DAM_Price"
+                  v-model="item.ENTSOE_FR_DAM_Price"
                   @input="validateInput($event, item, index, 'ENTSOE_FR_DAM_Price')"
                 />
                 <span v-if="errors[index]" class="error-message">{{
@@ -107,6 +98,7 @@ const validateInput = (event, item, index, key) => {
     </div>
   </div>
 </template>
+
 
 <style scoped>
 label {
@@ -122,7 +114,7 @@ label {
 }
 
 .table-wrapper {
-  width: 100%;
+  width: auto;
   max-width: 850px;
   overflow-x: auto;
   margin: 10px auto;
@@ -139,7 +131,7 @@ label {
 }
 
 table {
-  width: 100%;
+  width: auto;
   border-collapse: collapse;
 }
 
@@ -194,7 +186,7 @@ tr:nth-child(odd) {
 
 @media screen and (max-width: 1400px) {
   .table-wrapper {
-    width: 95%;
+    width: 100%;
   }
   table {
     font-size: 10px;

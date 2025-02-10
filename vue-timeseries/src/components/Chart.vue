@@ -75,7 +75,6 @@ const chartDataset = computed(() => {
 
 <style scoped>
 .Line-container {
-  position: sticky;
   width: 55%;
   top: 10px;
   max-height: 80vh;
