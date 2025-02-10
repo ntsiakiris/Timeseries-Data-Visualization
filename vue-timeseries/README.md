@@ -1,5 +1,30 @@
-# Vue 3 + TypeScript + Vite
+# Timeseries Data Visualization
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## Prerequisites
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+Ensure you have the following installed:
+
+- [Node.js](https://nodejs.org/) (LTS recommended)
+- [Git](https://git-scm.com/)
+- [Visual Studio Code](https://code.visualstudio.com/)
+
+## Clone the Repository
+
+Open a terminal and run:
+
+git clone https://github.com/ntsiakiris/Timeseries-Data-Visualization.git
+
+or 
+
+CTRL+ SHIFT+ P type git clone and paste the link https://github.com/ntsiakiris/Timeseries-Data-Visualization.git
+
+Open a terminal and run:
+
+cd Timeseries-Data-Visualization/vue-timeseries
+
+npm install 
+
+npm run dev
+
+
+you can check the project deployment right here --> https://timeseries-data-visualization-omega.vercel.app/
