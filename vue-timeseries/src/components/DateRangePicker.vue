@@ -1,10 +1,8 @@
 <script setup>
 import { ref, defineEmits, watch } from "vue";
 
-// Create an event emitter to communicate with the parent component
 const emit = defineEmits(["filterData"]);
 
-// Reactive values for the date range
 const startDate = ref("");
 const endDate = ref("");
 

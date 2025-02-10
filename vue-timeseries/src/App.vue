@@ -5,7 +5,6 @@ import Chart from "./components/Chart.vue";
 import DateRangePicker from "./components/DateRangePicker.vue";
 import jsonData from "./timeseries.json";
 
-// Make tableData reactive
 const tableData = ref(jsonData);
 const chartData = ref(jsonData);
 
