@@ -1,0 +1,130 @@
+---Websocket.ts---
+import { ref, onMounted, onUnmounted } from "vue";
+
+export function useWebSocket(url: string) {
+  const dataPoints = ref<{ label: string; value: number }[]>([]);
+  let ws: WebSocket | null = null;
+
+  const connectWebSocket = () => {
+    ws = new WebSocket(url);
+
+    ws.onmessage = (event) => {
+      const receivedData = JSON.parse(event.data);
+      dataPoints.value = receivedData.map((item: { label: string; value: number }) => ({
+        label: item.label,
+        value: item.value,
+      }));
+    };
+
+    ws.onclose = () => {
+      console.warn("WebSocket disconnected. Reconnecting...");
+      setTimeout(connectWebSocket, 3000);
+    };
+  };
+
+  onMounted(() => connectWebSocket());
+  onUnmounted(() => ws?.close());
+
+  return { dataPoints };
+}
+
+
+
+---Table.vue---
+<template>
+  <div class="col-md-6">
+    <h4>Live Data Table</h4>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Label</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(item, index) in dataPoints" :key="index">
+          <td>{{ index + 1 }}</td>
+          <td>{{ item.label }}</td>
+          <td>
+            <input
+              type="number"
+              class="form-control"
+              v-model.number="item.value"
+              @input="updateChart"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { defineProps } from "vue";
+
+const props = defineProps<{ dataPoints: { label: string; value: number }[] }>();
+
+const updateChart = () => {
+  props.dataPoints = [...props.dataPoints]; // Force reactivity
+};
+</script>
+
+<style scoped>
+.table {
+  text-align: center;
+}
+</style>
+
+
+
+---Chart.vue---
+<template>
+  <div class="col-md-6">
+    <h4>Live Chart</h4>
+    <Bar :chart-data="chartData" />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed, defineProps } from "vue";
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from "chart.js";
+import { Bar } from "vue-chart-3";
+
+// Register Chart.js components
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
+
+const props = defineProps<{ dataPoints: { label: string; value: number }[] }>();
+
+const chartData = computed(() => ({
+  labels: props.dataPoints.map((item) => item.label),
+  datasets: [
+    {
+      label: "Live Data",
+      backgroundColor: "#007bff",
+      data: props.dataPoints.map((item) => item.value),
+    },
+  ],
+}));
+</script>
+
+
+
+---App.vue---
+<template>
+  <div class="container mt-4">
+    <h2 class="text-center mb-3">Live WebSocket Dashboard</h2>
+    <div class="row">
+      <DataTable :dataPoints="dataPoints" />
+      <BarChart :dataPoints="dataPoints" />
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { useWebSocket } from "@/composables/useWebSocket";
+import DataTable from "@/components/DataTable.vue";
+import BarChart from "@/components/BarChart.vue";
+
+const { dataPoints } = useWebSocket("wss://your-websocket-url");
+</script>
